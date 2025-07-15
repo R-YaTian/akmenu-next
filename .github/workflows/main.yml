@@ -29,6 +29,7 @@ jobs:
 
       - name: Build akmenu-next
         run: |
+          make nds-bootloader
           make -j$(nproc)
 
       - name: Run package script
