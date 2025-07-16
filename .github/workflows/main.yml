@@ -19,7 +19,7 @@ jobs:
       - name: Update packages
         run: |
           sudo -n apt-get update
-          sudo -n apt-get upgrade -y fakeroot zip
+          sudo -n apt-get upgrade -y fakeroot zip p7zip-full
 
       - name: Silence all git safe directory warnings
         run: git config --system --add safe.directory '*'
