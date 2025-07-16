@@ -20,9 +20,17 @@ GAME_TITLE     := akmenu-next
 GAME_SUBTITLE1 := nds-bootstrap
 GAME_SUBTITLE2 := github.com/coderkei
 
+ifeq ($(OS),Windows_NT)
+    MAKE_CIA = ./tools/make_cia.exe
+else
+    UNAME_S := $(shell uname -s)
+    ifeq ($(UNAME_S),Linux)
+        MAKE_CIA = ./tools/make_cia
+    endif
+endif
+
 include $(DEVKITARM)/ds_rules
 
-#.PHONY: checkarm7 checkarm9 checkarm9_ak2 checkarm9_dsi checkarm9_m3 checkarm9_tt clean
 .PHONY: nds-bootloader checkarm7 checkarm9 checkarm9_dsi clean
 
 #---------------------------------------------------------------------------------
@@ -47,7 +55,7 @@ checkarm9:
 	$(MAKE) -C arm9
 
 #---------------------------------------------------------------------------------
-checkarm9_dsi:
+checkarm9_dsi: nds-bootloader
 	$(MAKE) -C arm9_dsi
 
 #---------------------------------------------------------------------------------
@@ -88,7 +96,7 @@ organize_files:
 
 #---------------------------------------------------------------------------------
 make_cia:
-	./tools/make_cia.exe --srl=$(CURDIR)/package/$(TARGET).dsi -o $(CURDIR)/package/$(TARGET).cia
+	$(MAKE_CIA) --srl=$(CURDIR)/package/$(TARGET).dsi -o $(CURDIR)/package/$(TARGET).cia
 
 #---------------------------------------------------------------------------------
 clean:
